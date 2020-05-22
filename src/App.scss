@@ -1,0 +1,41 @@
+.App {
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #282c34;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.daySchedule {
+  flex: 1;
+  height: 100vh;
+
+  .entry {
+    color: black;
+    font-size: 12px;
+    background-color: white;
+    position: absolute;
+    width: 21vw;
+    margin-left: 2vw;
+
+    &.missing {
+      background-color: #ff000080;
+    }
+
+    &.back {
+      color: white;
+      background-color: initial;
+      text-align: left;
+      width: 25vw;
+      margin-left: 0;
+      &:nth-child(even) {
+        background-color: #484a50;
+      }
+    }
+  }
+
+}
