@@ -8,25 +8,27 @@ class ScheduleEntry extends React.Component {
   }
 
   render() {
-      if (this.props.type == "missing") {
-        return (
-            <div className="entry missing" style={{
-              height: this.props.height,
-              marginTop: this.props.offset
-            }}>
-              {"Missing programming"}
-            </div>
-        );
-      } else {
     return (
-        <div className="entry" style={{
+      <div className={"entry " + this.props.type}
+        style={{
           height: this.props.height,
           marginTop: this.props.offset
-        }}>
-          {this.props.entry.name}
-        </div>
+        }}
+      >
+        { this.renderBody() }
+      </div>
     );
-      }
+  }
+
+  renderBody() {
+    switch (this.props.type) {
+      case "missing":
+        return "Missing Programming";
+      case "back":
+        return this.props.index;
+      default:
+        return this.props.entry.name;
+    }
   }
 }
 export default ScheduleEntry;
