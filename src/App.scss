@@ -4,8 +4,21 @@
   width: 100vw;
   background-color: #282c34;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: stretch;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+
+  .schedule {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+  }
+
+  .info {
+    height: 200px;
+  }
+
 }

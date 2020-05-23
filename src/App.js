@@ -52,7 +52,12 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        { daySchedule }
+        <div className="info">
+
+        </div>
+        <div className="schedule">
+          { daySchedule }
+        </div>
       </div>
     );
   }
