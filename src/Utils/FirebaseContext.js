@@ -8,7 +8,7 @@ export class FirebaseContextObject {
   firebase = null;
   db = null;
 
-  schedule = [];
+  schedule = null;
 
   constructor(firebase, firebaseConfig) {
       this.firebase = firebase
@@ -35,7 +35,7 @@ export class FirebaseContextObject {
 
   addCallback(callback) {
     this.callbacks.push(callback);
-    if (this.schedule != []) {
+    if (this.schedule !== null) {
       callback(this.schedule);
     }
   }
