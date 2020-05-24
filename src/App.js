@@ -23,24 +23,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.context.db
-      .collection("schedule")
-      .where("start", ">", this.state.today)
-      .orderBy("start")
-      .onSnapshot((querySnapshot) => {this.receiveScheduleUpdate(querySnapshot)});
-  }
-
-  receiveScheduleUpdate(querySnapshot) {
-    console.log("schedule update received");
-    
-    var result = []
-    querySnapshot.forEach((doc) => {
-      result.push(doc.data());
-    });
-
-    this.setState({
-      data: result,
-    });
+    this.context.addCallback((schedule) => {this.setState({data: schedule});});
   }
 
   render() {
