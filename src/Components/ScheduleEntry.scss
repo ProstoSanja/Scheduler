@@ -3,8 +3,6 @@
   font-size: 12px;
   background-color: white;
   position: absolute;
-  width: 21vw;
-  margin-left: 2vw;
 
   &.missing {
     background-color: #ff000080;
@@ -14,8 +12,6 @@
     color: white;
     background-color: initial;
     text-align: left;
-    width: 25vw;
-    margin-left: 0;
     &:nth-child(even) {
       background-color: #484a50;
     }

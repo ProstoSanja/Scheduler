@@ -11,6 +11,7 @@ class ScheduleTimeLine extends React.Component {
     return (
       <div className="timeline"
         style={{
+          width: this.props.width,
           marginTop: this.props.offset
         }}
       />

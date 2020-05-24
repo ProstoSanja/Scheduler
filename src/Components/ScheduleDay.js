@@ -8,27 +8,23 @@ import ScheduleTimeLine from './ScheduleTimeLine'
 
 class ScheduleDay extends React.Component {
 
-  state = {
-    height: 0,
-  };
+  state = { };
 
   parentRef = React.createRef();
 
   componentDidMount() {
     window.addEventListener("resize", this._handleResize);
-    this.handleResize();
+    this._handleResize();
   }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this._handleResize);
   }
 
-  _handleResize = () => { this.handleResize(); }
-  handleResize() {
-    this.setState({
-      height: this.parentRef.current.offsetHeight,
-    });
-  }
+  _handleResize = () => { this.forceUpdate(); }
+
+  getWidth() { return this.parentRef.current?.offsetWidth; }
+  getHeight() { return this.parentRef.current?.offsetHeight; }
 
   render() {
     return (
@@ -44,7 +40,7 @@ class ScheduleDay extends React.Component {
     var nowOffset = new Date().getTime() - this.props.dayStartInMills;
     if (nowOffset < DAY_LENGTH_IN_MILLS && nowOffset >= 0) {
       return (
-        <ScheduleTimeLine offset={this.heightFromSeconds(nowOffset/1000)} />
+        <ScheduleTimeLine width={this.getWidth()} offset={this.heightFromSeconds(nowOffset/1000)} />
       );
     }
     return null;
@@ -69,6 +65,7 @@ class ScheduleDay extends React.Component {
         <ScheduleEntry
           key={index}
           entry={entry}
+          width={this.getWidth()}
           height={this.heightFromSeconds((end - start)/1000)}
           offset={this.heightFromSeconds((start-dayStartInMills)/1000)}
         />
@@ -84,6 +81,7 @@ class ScheduleDay extends React.Component {
           key={i+"B"}
           type={"back"}
           index={i}
+          width={this.getWidth()}
           height={this.heightFromSeconds(3600)}
           offset={this.heightFromSeconds(3600 * i)}
         />
@@ -93,7 +91,7 @@ class ScheduleDay extends React.Component {
   }
   
   heightFromSeconds(seconds) {
-    return seconds * this.state.height / 86400 + "px";
+    return seconds * this.getHeight() / 86400 + "px";
   }
 
 }

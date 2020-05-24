@@ -8,14 +8,17 @@ class ScheduleEntry extends React.Component {
   }
 
   render() {
+    var typeSpecificData = this.renderBody();
     return (
       <div className={"entry " + this.props.type}
         style={{
           height: this.props.height,
+          width: typeSpecificData.width,
+          marginLeft: typeSpecificData.marginLeft,
           marginTop: this.props.offset
         }}
       >
-        { this.renderBody() }
+        { typeSpecificData.body }
       </div>
     );
   }
@@ -25,9 +28,9 @@ class ScheduleEntry extends React.Component {
       case "missing":
         return "Missing Programming";
       case "back":
-        return this.props.index;
+        return {body: this.props.index, marginLeft: 0, width: this.props.width};
       default:
-        return this.props.entry.name;
+        return {body: this.props.entry.name, marginLeft: this.props.width/10, width: this.props.width*9/10};
     }
   }
 }

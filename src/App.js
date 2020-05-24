@@ -5,6 +5,7 @@ import FirebaseContext from './Utils/FirebaseContext';
 import {DAY_LENGTH_IN_MILLS} from './Utils/Consts';
 
 import ScheduleDay from './Components/ScheduleDay'
+// import ScheduleInfo from './Components/ScheduleInfo';
 
 class App extends React.Component {
 
@@ -52,9 +53,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <div className="info">
-
-        </div>
+        {/* <ScheduleInfo allEntries={this.state.data}/> */}
         <div className="schedule">
           { daySchedule }
         </div>
@@ -63,6 +62,6 @@ class App extends React.Component {
   }
 }
 
-App.contextType = FirebaseContext
+App.contextType = FirebaseContext;
 
 export default App;
