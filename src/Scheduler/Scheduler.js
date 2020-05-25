@@ -1,16 +1,17 @@
-import {DAY_LENGTH_IN_MILLS} from '../Utils/Consts';
 import {getTimesFromEntry, entriesEqual, getByTimeFromArray} from '../Utils/Entries';
 
 import ObsControl from './ObsControl';
+import AdManager from './AdManager';
 
 class Scheduler {
 
   obsControl = new ObsControl();
+  adManager = new AdManager(this.obsControl);
 
-  now = new Date();
   schedule = [];
   currentlyactive = null;
-  currentlyactiveIndex = -1;
+
+  callback = null;
 
   constructor(firebaseContext) {
     firebaseContext.addCallback( (schedule) => {this.schedulerUpdate(schedule); });
@@ -18,20 +19,41 @@ class Scheduler {
 
   schedulerUpdate(schedule) {
     this.schedule = schedule;
-    var [newActive, newIndex] = getByTimeFromArray(schedule, this.now);
-    if (!entriesEqual(newActive, this.currentlyactive)) {
-      console.log("schedulerUpdate, switch required");
-      this.prepareSceneChange(newActive, newIndex);
-    }
-    this.currentlyactiveIndex = newIndex;
-    this.currentlyactive = newActive;
+    this.prepareSceneChange();
   }
 
-  prepareSceneChange(newActive, newIndex) {
-    var nextEntry = this.schedule[newIndex+1];
-    var [nextStart, nextEnd] = getTimesFromEntry(nextEntry);
+  prepareSceneChange() {
+    var [newActive, newIndex] = getByTimeFromArray(this.schedule, new Date());
+    var [currentStart, currentEnd] = getTimesFromEntry(newActive);
+    
+    if (!entriesEqual(newActive, this.currentlyactive)) {
+      console.log("switching scenes to:", newActive);
+      if (!newActive) {
+        var [nextStart, nextEnd] = getTimesFromEntry(this.schedule[newIndex+1]);
+        currentEnd = nextStart;
+        this.adManager.startAdBlock(currentEnd);
+      } else {
+        this.adManager.stopAdBlock();
+        this.obsControl.switchToSource(newActive?.url);
+      }
+    }
+    this.currentlyactive = newActive;
 
-    this.obsControl.switchToSource(newActive?.url);
+    if (currentEnd > 0) {
+      this.enqueueSceneChangeAt(currentEnd);
+    } else {
+      console.log("end of programming reached");
+    }
+  }
+
+  enqueueSceneChangeAt(startAt) {
+    clearTimeout(this.callback);
+    var timeUntilEntry = startAt - new Date();
+
+    this.callback = (setTimeout(() => {
+      console.log("timeout triggered");
+      this.prepareSceneChange();
+    }, timeUntilEntry));
   }
 
 }

@@ -25,7 +25,7 @@ function getByTimeFromArray(schedule, now) {
       return [null, i-1];
     }
   }
-  return [null, -1];
+  return [null, schedule.length];
 }
 
 export { getTimesFromEntry, entriesEqual, getByTimeFromArray };
