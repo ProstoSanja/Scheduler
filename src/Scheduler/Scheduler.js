@@ -9,7 +9,7 @@ class Scheduler {
   adManager = new AdManager(this.obsControl);
 
   schedule = [];
-  currentlyactive = null;
+  currentlyactive = {};
 
   callback = null;
 
