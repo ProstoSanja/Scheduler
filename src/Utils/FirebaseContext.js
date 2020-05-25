@@ -3,12 +3,17 @@ const FirebaseContext = React.createContext(null);
 
 export class FirebaseContextObject {
 
-  callbacks = [];
-
   firebase = null;
   db = null;
 
-  schedule = null;
+  data = {
+    ads: null,
+    schedule: null
+  };
+  callbacks = {
+    ads: [],
+    schedule: []
+  }
 
   constructor(firebase, firebaseConfig) {
       this.firebase = firebase
@@ -19,24 +24,28 @@ export class FirebaseContextObject {
         .collection("schedule")
         // .where("start", ">", this.state.today)
         .orderBy("start")
-        .onSnapshot((querySnapshot) => {this.receiveScheduleUpdate(querySnapshot)});
+        .onSnapshot((querySnapshot) => {this.receiveUpdate(querySnapshot, 'schedule')});
+      this.db
+        .collection("ads")
+        .onSnapshot((querySnapshot) => {this.receiveUpdate(querySnapshot, 'ads')});
   }
 
-  receiveScheduleUpdate(querySnapshot) {
+  receiveUpdate(querySnapshot, category) {
     console.log("schedule update received");
-    this.schedule = [];
+    var result = [];
     querySnapshot.forEach((doc) => {
-      this.schedule.push(doc.data());
+      result.push(doc.data());
     });
-    this.callbacks.forEach(callback => {
-      callback(this.schedule);
+    this.data[category] = result;
+    this.callbacks[category].forEach(callback => {
+      callback(result);
     });
   }
 
-  addCallback(callback) {
-    this.callbacks.push(callback);
-    if (this.schedule !== null) {
-      callback(this.schedule);
+  addCallback(callback, category) {
+    this.callbacks[category].push(callback);
+    if (this.data[category] !== null) {
+      callback(this.data[category]);
     }
   }
 }

@@ -14,7 +14,7 @@ class Scheduler {
   callback = null;
 
   constructor(firebaseContext) {
-    firebaseContext.addCallback( (schedule) => {this.schedulerUpdate(schedule); });
+    firebaseContext.addCallback( (schedule) => {this.schedulerUpdate(schedule); }, 'schedule');
   }
 
   schedulerUpdate(schedule) {

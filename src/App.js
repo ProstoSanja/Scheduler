@@ -23,11 +23,11 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.context.addCallback((schedule) => {this.setState({data: schedule});});
+    this.context.addCallback((schedule) => {this.setState({data: schedule});}, 'schedule');
   }
 
   render() {
-    var daySchedule = []    
+    var daySchedule = [];
     for (let i = 0; i < this.state.days; i++) {
       daySchedule.push(
         <ScheduleDay key={i} allEntries={this.state.data} dayStartInMills={this.state.today.getTime() + i*DAY_LENGTH_IN_MILLS}/>
