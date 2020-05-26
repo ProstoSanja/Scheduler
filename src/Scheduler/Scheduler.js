@@ -6,7 +6,7 @@ import AdManager from './AdManager';
 class Scheduler {
 
   obsControl = new ObsControl();
-  adManager = new AdManager(this.obsControl);
+  adManager = null;
 
   schedule = [];
   currentlyactive = {};
@@ -14,6 +14,7 @@ class Scheduler {
   callback = null;
 
   constructor(firebaseContext) {
+    this.adManager = new AdManager(firebaseContext, this.obsControl);
     firebaseContext.addCallback( (schedule) => {this.schedulerUpdate(schedule); }, 'schedule');
   }
 

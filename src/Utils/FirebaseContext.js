@@ -7,11 +7,9 @@ export class FirebaseContextObject {
   db = null;
 
   data = {
-    ads: null,
     schedule: null
   };
   callbacks = {
-    ads: [],
     schedule: []
   }
 
@@ -25,13 +23,10 @@ export class FirebaseContextObject {
         // .where("start", ">", this.state.today)
         .orderBy("start")
         .onSnapshot((querySnapshot) => {this.receiveUpdate(querySnapshot, 'schedule')});
-      this.db
-        .collection("ads")
-        .onSnapshot((querySnapshot) => {this.receiveUpdate(querySnapshot, 'ads')});
   }
 
   receiveUpdate(querySnapshot, category) {
-    console.log("schedule update received");
+    console.log("update received: ", category);
     var result = [];
     querySnapshot.forEach((doc) => {
       result.push(doc.data());
